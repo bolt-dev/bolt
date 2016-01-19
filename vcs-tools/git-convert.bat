@@ -1,4 +1,5 @@
 @echo off
+echo Running git-convert in %CD%
 set "REPO_DIR=%CD%"
 ::rd /s /q "%REPO_DIR%.git"
 
@@ -32,4 +33,3 @@ git branch -d master
 git push --mirror %~1 --force
 
 :finished
-cd /d %WD%

@@ -27,7 +27,7 @@ def delDir(dirPath):
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 srcDir = os.path.normpath(os.getcwd())
 
-mirrorDir = os.path.join(os.path.dirname(srcDir), 'bolt-mirror');
+mirrorDir = os.path.dirname(srcDir)
 
 def RunHg(args = [], stdout = sys.stdout, stderr=sys.stderr, verborse=True):
     if (isinstance(args , str)):
@@ -42,19 +42,20 @@ def RunHg(args = [], stdout = sys.stdout, stderr=sys.stderr, verborse=True):
           print('Running finished')
         return hg.returncode, ret
     return hg.wait()
+
 def RunGitConvert(args = [], stdout = sys.stdout, stderr=sys.stderr, verborse=True):
     if (isinstance(args , str)):
         args = [args]
     args = ['git-convert'] + args
     if verborse:
       print("Running " + ' '.join(args) + ' in ' + os.getcwd())
-        hg = subprocess.Popen(args, shell = False, stdout=stdout, stderr=stderr)
+    git = subprocess.Popen(args, shell = True, stdout=stdout, stderr=stderr)
     if stdout == subprocess.PIPE or stderr == subprocess.PIPE:
-        ret = hg.communicate()
+        ret = git.communicate()
         if verborse:
           print('Running finished')
-        return hg.returncode, ret
-    return hg.wait()
+        return git.returncode, ret
+    return git.wait()
 
 def CloneURL(dirPath, url, repoName, force = False):
     try:
@@ -309,17 +310,16 @@ def SyncHgBookmark(repoList, repoName, gitPushURI):
             if errorCode != 0:
                 #return errorCode
                 pass
-    print revisionCount
-    # gitPushURI
-    # if not onlyPull:
-    #    ret = RunHg(['push', 'ssh://hg@bitbucket.org/mozilla-mirror/' + repoName])
+
+    os.chdir(repoPath)
+    return RunGitConvert([gitPushURI])
 
 def main(argv):
     RunHg('--version')
     onlyPull = False
     SyncHgBookmark(CHATZILLA_REPO_LIST, 'chatzilla', 'git@github.com:mail-apps/chatzilla.git')
-    #SyncHgBookmark(DOM_INSPECTOR_REPO_LIST, 'dom-inspector', 'git@github.com:mail-apps/inspector.git')
-    #SyncHgBookmark(COMM_REPO_LIST, 'comm', 'git@github.com:mail-apps/comm.git')
+    SyncHgBookmark(DOM_INSPECTOR_REPO_LIST, 'dom-inspector', 'git@github.com:mail-apps/inspector.git')
+    SyncHgBookmark(COMM_REPO_LIST, 'comm', 'git@github.com:mail-apps/comm.git')
     #SyncHgBookmark(MOZILLA_REPO_LIST, 'mozilla', 'git@github.com:mail-apps/gecko-dev.git')
     return 0
 
