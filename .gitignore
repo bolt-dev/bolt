@@ -1,0 +1,6 @@
+mozbuild
+mozilla-build
+comm
+*.pyc
+.bash_history
+build/Obj-*

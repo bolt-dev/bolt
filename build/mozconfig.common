@@ -1,0 +1,29 @@
+CONFIG_GUESS=`$topsrcdir/build/autoconf/config.guess`
+
+mk_add_options MOZ_OBJDIR=$BUILD_HOME/Obj-$TARGET_NAME-$CONFIG_GUESS-$BUILD_VARIANT-${BUILD_ARCH}
+
+#ac_add_options --enable-trace-malloc #Mac OS X
+. "$HOME/$TARGET_NAME/mozconfig.common.begin"
+
+#ac_add_options --enable-update-channel=${MOZ_UPDATE_CHANNEL}
+ac_add_options --enable-update-packaging
+ac_add_options --enable-jemalloc
+#Install DXSDK_Jun10.exe for Windows XP, http://www.microsoft.com/en-us/download/details.aspx?id=6812
+ac_add_options --enable-require-all-d3dc-versions
+#ac_add_options --enable-extensions="irc inspector"
+# For NSS symbols
+export MOZ_DEBUG_SYMBOLS=1
+
+export MOZ_TELEMETRY_REPORTING=1
+
+# Needed to enable breakpad in application.ini
+export MOZILLA_OFFICIAL=1
+
+# Package js shell
+export MOZ_PACKAGE_JSSHELL=1
+
+
+. "$HOME/$CONFIG_GUESS/mozconfig.common"
+. "$HOME/$CONFIG_GUESS/mozconfig.$BUILD_VARIANT"
+. "$HOME/$TARGET_NAME/mozconfig.common.end"
+

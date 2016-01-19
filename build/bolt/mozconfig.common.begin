@@ -1,0 +1,12 @@
+. "$HOME/../comm/build/mozconfig.common"
+
+ac_add_options --enable-application=mail
+ac_add_options --enable-calendar
+ac_add_options --enable-official-branding
+
+# Custom options.
+# Build mail into separate dynamic library
+# ac_add_options --enable-incomplete-external-linkage
+
+ac_add_options --disable-tests # tests are disabled either
+

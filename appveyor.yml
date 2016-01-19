@@ -2,29 +2,42 @@ version: "{build}"
 
 skip_tags: true
 clone_folder: C:\CI\bolt
-clone_depth: 10
 
 platform:
   - x86
+  - x64
+
+configuration:
+  - Debug
+  - Release
+  - Release+Debug
 
 environment:
   matrix:
-  - NODE_VERSION: 0.10.35
+  - NODE_VERSION: 4.2.4
 
 install:
   - SET PATH=C:\Program Files\Atom\resources\cli;%PATH%
   - ps: Install-Product node $env:NODE_VERSION $env:PLATFORM
+  - cd /d %APPVEYOR_BUILD_FOLDER%
+  - python build\install.py
 
 build_script:
-  - cd %APPVEYOR_BUILD_FOLDER%
-  - C:\CI\bolt\CI-Build.cmd
+  - cd /d %APPVEYOR_BUILD_FOLDER%
+  - CI-Build.cmd
 
 test: off
 deploy: off
 artifacts:
   - path: atom-build
 
+on_finish:
+  - cd /d %APPVEYOR_BUILD_FOLDER%
+  - python build\finish.py
+
 cache:
+  - mozbuild
+  - node_modules
   - '%USERPROFILE%\.atom\.apm'
   - '%USERPROFILE%\.atom\.node-gyp\.atom'
   - '%USERPROFILE%\.atom\.npm'

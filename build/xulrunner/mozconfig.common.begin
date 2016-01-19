@@ -1,0 +1,4 @@
+. "$HOME/../comm/mozilla/xulrunner/config/mozconfigs/common"
+
+ac_add_options --enable-application=xulrunner
+ac_add_options --disable-tests # no tests for xulrunner.

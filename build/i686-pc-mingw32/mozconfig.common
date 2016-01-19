@@ -1,0 +1,9 @@
+#Some common options
+. "$HOME/mozconfig.vs-common"
+
+# Set up mapi includes (must be done after visual studio setup)
+# and the style should be cmd.exe style
+MAPI_INCLUDE=$({ cd $HOME/Outlook-MAPI && pwd -W; } | sed 's|/|\\|g')
+export INCLUDE="$MAPI_INCLUDE;$INCLUDE"
+# Should use mk_export_correct_style export to cmd.exe
+mk_export_correct_style INCLUDE
