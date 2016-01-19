@@ -32,11 +32,23 @@ mirrorDir = os.path.join(os.path.dirname(srcDir), 'bolt-mirror');
 def RunHg(args = [], stdout = sys.stdout, stderr=sys.stderr, verborse=True):
     if (isinstance(args , str)):
         args = [args]
-    config = ['--config', 'http_proxy.host=127.0.0.1:8118']
     args = ['hg'] + args
     if verborse:
       print("Running " + ' '.join(args) + ' in ' + os.getcwd())
     hg = subprocess.Popen(args, shell = False, stdout=stdout, stderr=stderr)
+    if stdout == subprocess.PIPE or stderr == subprocess.PIPE:
+        ret = hg.communicate()
+        if verborse:
+          print('Running finished')
+        return hg.returncode, ret
+    return hg.wait()
+def RunGitConvert(args = [], stdout = sys.stdout, stderr=sys.stderr, verborse=True):
+    if (isinstance(args , str)):
+        args = [args]
+    args = ['git-convert'] + args
+    if verborse:
+      print("Running " + ' '.join(args) + ' in ' + os.getcwd())
+        hg = subprocess.Popen(args, shell = False, stdout=stdout, stderr=stderr)
     if stdout == subprocess.PIPE or stderr == subprocess.PIPE:
         ret = hg.communicate()
         if verborse:
@@ -183,10 +195,10 @@ def GetAllBranches(args = ['branches', '-c'], repoPath=None, isURL = False):
         return errorCode, []
     return 0, FilterBranchesResult(hg[0].split('\n'), isURL)
 
-def SyncHgBookmark(repoList, repoName, onlyPull):
+def SyncHgBookmark(repoList, repoName, gitPushURI):
     repoPath = os.path.join(mirrorDir, repoName)
     errorCode = PullRepoList(repoList, repoName)
-    if errorCode !=0 or onlyPull is True:
+    if errorCode !=0:
         return errorCode
     errorCode, allBranches = GetAllBranches(repoPath = repoPath)
     if errorCode != 0:
@@ -298,16 +310,17 @@ def SyncHgBookmark(repoList, repoName, onlyPull):
                 #return errorCode
                 pass
     print revisionCount
-    if not onlyPull:
-        ret = RunHg(['push', 'ssh://hg@bitbucket.org/mozilla-mirror/' + repoName])
+    # gitPushURI
+    # if not onlyPull:
+    #    ret = RunHg(['push', 'ssh://hg@bitbucket.org/mozilla-mirror/' + repoName])
 
 def main(argv):
     RunHg('--version')
     onlyPull = False
-    SyncHgBookmark(CHATZILLA_REPO_LIST, 'chatzilla', onlyPull)
-    SyncHgBookmark(DOM_INSPECTOR_REPO_LIST, 'dom-inspector', onlyPull)
-    SyncHgBookmark(COMM_REPO_LIST, 'comm', onlyPull)
-    SyncHgBookmark(MOZILLA_REPO_LIST, 'mozilla', onlyPull)
+    SyncHgBookmark(CHATZILLA_REPO_LIST, 'chatzilla', 'git@github.com:mail-apps/chatzilla.git')
+    #SyncHgBookmark(DOM_INSPECTOR_REPO_LIST, 'dom-inspector', 'git@github.com:mail-apps/inspector.git')
+    #SyncHgBookmark(COMM_REPO_LIST, 'comm', 'git@github.com:mail-apps/comm.git')
+    #SyncHgBookmark(MOZILLA_REPO_LIST, 'mozilla', 'git@github.com:mail-apps/gecko-dev.git')
     return 0
 
 if __name__ == '__main__':

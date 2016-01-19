@@ -1,6 +1,4 @@
 @echo off
-call %~dp0prepare-hg.bat
-cd /d %WD%\%~1
 set "REPO_DIR=%CD%"
 ::rd /s /q "%REPO_DIR%.git"
 
@@ -29,9 +27,9 @@ if not "%errorlevel%" EQU "0" (
 cd .hg\git
 git gc %GC_OPTIONS%
 
-if "%~2" equ "" goto :finished
+if "%~1" equ "" goto :finished
 git branch -d master
-git push --mirror %~2 --force
+git push --mirror %~1 --force
 
 :finished
 cd /d %WD%
