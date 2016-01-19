@@ -1,18 +1,13 @@
 version: "{build}"
 
 skip_tags: true
-clone_folder: c:\projects\atom
+clone_folder: C:\CI\bolt
 clone_depth: 10
 
 platform:
   - x86
 
 environment:
-  global:
-    ATOM_DEV_RESOURCE_PATH: c:\projects\atom
-    ATOM_ACCESS_TOKEN:
-      secure: Q7vxmSq0bVCLTTRPzXw5ZhPTe7XYhWxX0tQV6neEkddTH6pZkOYNmSCG6VnMX2f+
-
   matrix:
   - NODE_VERSION: 0.10.35
 
@@ -22,7 +17,7 @@ install:
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
-  - C:\projects\atom\script\cibuild.cmd
+  - C:\CI\bolt\script\cibuild.cmd
 
 test: off
 deploy: off
