@@ -1,0 +1,6 @@
+[experimental]
+clonebundles = true
+
+[extensions]
+#hggit=C:\CI-Tools\hg-plugins\hg-git\hggit
+brancheslist=~/brancheslist
