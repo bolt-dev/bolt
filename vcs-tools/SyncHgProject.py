@@ -314,13 +314,126 @@ def SyncHgBookmark(repoList, repoName, gitPushURI):
     os.chdir(repoPath)
     return RunGitConvert([gitPushURI])
 
+locales = [
+  'ach',
+  'af',
+  'ak',
+  'ar',
+  'as',
+  'ast',
+  'be',
+  'bg',
+  'bn-BD',
+  'bn-IN',
+  'br',
+  'bs',
+  'ca',
+  'cs',
+  'cy',
+  'da',
+  'de',
+  'el',
+  'en-GB',
+  'en-ZA',
+  'eo',
+  'es-AR',
+  'es-CL',
+  'es-ES',
+  'es-MX',
+  'et',
+  'eu',
+  'fa',
+  'ff',
+  'fi',
+  'fr',
+  'fy-NL',
+  'ga-IE',
+  'gd',
+  'gl',
+  'gu-IN',
+  'he',
+  'hi-IN',
+  'hr',
+  'hu',
+  'hy-AM',
+  'id',
+  'is',
+  'it',
+  'ja',
+  'ja-JP-mac',
+  'ka',
+  'kk',
+  'km',
+  'kn',
+  'ko',
+  'ku',
+  'lg',
+  'lij',
+  'lt',
+  'lv',
+  'mai',
+  'mk',
+  'ml',
+  'mn',
+  'mr',
+  'ms',
+  'my',
+  'nb-NO',
+  'ne-NP',
+  'nl',
+  'nn-NO',
+  'nr',
+  'nso',
+  'oc',
+  'or',
+  'pa-IN',
+  'pl',
+  'pt-BR',
+  'pt-PT',
+  'rm',
+  'ro',
+  'ru',
+  'rw',
+  'si',
+  'sk',
+  'sl',
+  'son',
+  'sq',
+  'sr',
+  'ss',
+  'st',
+  'sv-SE',
+  'ta',
+  'ta-LK',
+  'te',
+  'th',
+  'tn',
+  'tr',
+  'ts',
+  'uk',
+  've',
+  'vi',
+  'wo',
+  'x-testing',
+  'xh',
+  'zh-CN',
+  'zh-TW',
+  'zu'
+]
+
+# https://hg.mozilla.org/releases/l10n/mozilla-release
 def main(argv):
     RunHg('--version')
-    onlyPull = False
+    for name in locales:
+      l10n = [
+        ('https://hg.mozilla.org/l10n-central/' + name, 'default'),
+        ('https://hg.mozilla.org/releases/l10n/mozilla-release/' + name, 'release')
+      ]
+      SyncHgBookmark(l10n, 'l10n/' + name, 'git@github.com:mail-apps-l10n/' + name + '.git')
     SyncHgBookmark(CHATZILLA_REPO_LIST, 'chatzilla', 'git@github.com:mail-apps/chatzilla.git')
     SyncHgBookmark(DOM_INSPECTOR_REPO_LIST, 'dom-inspector', 'git@github.com:mail-apps/inspector.git')
     SyncHgBookmark(COMM_REPO_LIST, 'comm', 'git@github.com:mail-apps/comm.git')
-    SyncHgBookmark(MOZILLA_REPO_LIST, 'mozilla', 'git@github.com:mail-apps/gecko-dev.git')
+    # SyncHgBookmark(MOZILLA_REPO_LIST, 'mozilla', 'git@github.com:mail-apps/gecko-dev.git')
     return 0
 
 if __name__ == '__main__':
