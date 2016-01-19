@@ -17,7 +17,7 @@ install:
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
-  - C:\CI\bolt\script\cibuild.cmd
+  - C:\CI\bolt\CI-Build.cmd
 
 test: off
 deploy: off
