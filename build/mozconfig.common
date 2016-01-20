@@ -1,6 +1,10 @@
-CONFIG_GUESS=`$topsrcdir/build/autoconf/config.guess`
+BUILD_TRIPLE=$BUILD_ARCH-$BUILD_VENDOR
+TARGET_DIR = $BUILD_HOME/Obj-$TARGET_NAME-$BUILD_TRIPLE-$BUILD_VARIANT
+echo Config with PWD:$PWD TARGET_DIR: ${TARGET_DIR} BUILD_TRIPLE:$BUILD_TRIPLE TARGET_DIR:$TARGET_DIR
 
-mk_add_options MOZ_OBJDIR=$BUILD_HOME/Obj-$TARGET_NAME-$CONFIG_GUESS-$BUILD_VARIANT-${BUILD_ARCH}
+mk_add_options MOZ_OBJDIR=${TARGET_DIR}
+ac_add_options --target=$BUILD_TRIPLE
+ac_add_options --host=$BUILD_TRIPLE
 
 #ac_add_options --enable-trace-malloc #Mac OS X
 . "$HOME/$TARGET_NAME/mozconfig.common.begin"
@@ -23,7 +27,7 @@ export MOZILLA_OFFICIAL=1
 export MOZ_PACKAGE_JSSHELL=1
 
 
-. "$HOME/$CONFIG_GUESS/mozconfig.common"
-. "$HOME/$CONFIG_GUESS/mozconfig.$BUILD_VARIANT"
+. "$HOME/$BUILD_VENDOR/mozconfig.common"
+. "$HOME/$BUILD_VENDOR/mozconfig.$BUILD_VARIANT"
 . "$HOME/$TARGET_NAME/mozconfig.common.end"
 

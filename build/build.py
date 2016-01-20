@@ -16,10 +16,13 @@ def buildOnWin32():
   env = os.environ
   is64 = 'BUILD_ARCH' in env and env['BUILD_ARCH'] != 'x86'
 
-  arch = '64' if is64 else '32'
-  setEnv(env, 'MOZ_MSVCBITS', arch)
+  archBits = '64' if is64 else '32'
+  setEnv(env, 'MOZ_MSVCBITS', archBits)
   setEnv(env, 'MOZ_MSVCVERSION', '12')
   setEnv(env, 'MOZ_MSVCYEAR', '2013')
+  buildArch = 'x86_64' if is64 else 'x86'
+  setEnv(env, 'BUILD_ARCH', buildArch)
+  setEnv(env, 'BUILD_VENDOR', 'pc-mingw32')
   setEnv(env, 'BUILD_VARIANT', env['BUILD_VARIANT'].lower())
   homeDir = os.path.join(srcDir, 'build').replace('\\', '/')
   homeDir = homeDir[0].lower() + homeDir[1:]
