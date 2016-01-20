@@ -40,18 +40,14 @@ def rename(src, target, force=False):
       if not force:
         raise
 
-def checkoutGit(uri, path, branch = None, isFinish = False, autoCRLF = False):
+def checkoutGit(uri, path, branch = None, autoCRLF = False):
     parentPath = os.path.dirname(path)
+    srcGit = os.path.join(path, '.git')
+    targetGit = os.path.join(path, 'cache.git')
     if isAppveyor():
       if os.path.exists(path):
         print('The folder size for %s is: %d' % (path, getSize(path)))
-        srcGit = os.path.join(path, '.git')
-        targetGit = os.path.join(path, 'git')
-        if isFinish:
-          return rename(srcGit, targetGit)
         rename(targetGit, srcGit, True)
-    if isFinish:
-      return
     branch = branch or 'master'
     print('Checkout %s in %s' %(uri, path))
     parentHead = getGitHeadRevision(parentPath)
@@ -71,6 +67,8 @@ def checkoutGit(uri, path, branch = None, isFinish = False, autoCRLF = False):
     run('git fetch --force --tags'.split(' '), cwd=path)
     if checkoutForce(uri, path, branch) != 0:
         print('Checkout %s failed' % (uri))
+    if isAppveyor():
+      rename(srcGit, targetGit)
 
 def run(args = [], stdout = sys.stdout, stderr=sys.stderr, shell = False, cwd=None, verborse=True, env=None):
     if (isinstance(args , str)):

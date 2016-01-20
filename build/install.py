@@ -17,14 +17,9 @@ def checkout(uri, path, branch):
 def checkoutAll(finished=False):
   global isFinish
   isFinish = finished
-  print('The src dir is: ' + srcDir)
   checkout('https://github.com/html-shell/mozbuild', 'mozbuild', None)
-
-  # Try the git clone done properly first
   checkout('https://github.com/html-shell/mozilla-build', 'mozilla-build', None)
   checkout('https://github.com/bolt-dev/comm', 'comm', None)
-  print("checkout mozbuild first")
-  return 
   checkout('https://github.com/bolt-dev/gecko-dev', 'comm/mozilla', None)
 
 def install():
