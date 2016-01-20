@@ -39,16 +39,16 @@ def rename(src, target, force=False):
     except:
       if not force:
         raise
-  
+
 def checkoutGit(uri, path, branch = None, isFinish = False, autoCRLF = False):
     parentPath = os.path.dirname(path)
     if isAppveyor():
       if os.path.exists(path):
-        print('The folder size is:' + str(getSize(path)))
+        print('The folder size for %s is: %d' % (path, getSize(path)))
         srcGit = os.path.join(path, '.git')
         targetGit = os.path.join(path, 'git')
         if isFinish:
-          return rename(srcGit, targetGit) 
+          return rename(srcGit, targetGit)
         rename(targetGit, srcGit, True)
     if isFinish:
       return
@@ -63,9 +63,10 @@ def checkoutGit(uri, path, branch = None, isFinish = False, autoCRLF = False):
         if run(cmd.split(' '), cwd=parentPath).returncode != 0:
             print('Clone failed!')
             delDir(path)
-    if autoCRLF:
-        cmd = 'git config --local core.autocrlf false'
-        run(cmd.split(' '), cwd=path)
+    cmd = 'git config --local core.autocrlf %s' % (autoCRLF and 'true' or 'false')
+    run(cmd.split(' '), cwd=path)
+
+    run('git remote set-url origin'.split(' ') + [uri], cwd=path)
     run('git fetch --force --all'.split(' '), cwd=path)
     run('git fetch --force --tags'.split(' '), cwd=path)
     if checkoutForce(uri, path, branch) != 0:
