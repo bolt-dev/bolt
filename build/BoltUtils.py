@@ -35,7 +35,7 @@ def getSize(start_path = '.'):
 
 def rename(src, target, force=False):
     try:
-      os.rename(os.path.join(path, 'git'), os.path.join(path, '.git'))
+      os.rename(src, target)
     except:
       if not force:
         raise
