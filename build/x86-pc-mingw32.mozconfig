@@ -1,0 +1,2 @@
+#Install DXSDK_Jun10.exe for Windows XP, http://www.microsoft.com/en-us/download/details.aspx?id=6812
+ac_add_options --enable-require-all-d3dc-versions
