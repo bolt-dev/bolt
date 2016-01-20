@@ -28,16 +28,17 @@ build_script:
 
 test: off
 deploy: off
+
 artifacts:
   - path: atom-build
 
 on_success:
   - cd /d %APPVEYOR_BUILD_FOLDER%
-  - python build\finish.py 'success'
+  - python build\finish.py success
 
 on_failure:
   - cd /d %APPVEYOR_BUILD_FOLDER%
-  - python build\finish.py 'failure'
+  - python build\finish.py failure
 
 cache:
   - mozbuild
