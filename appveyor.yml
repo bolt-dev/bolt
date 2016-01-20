@@ -3,28 +3,35 @@ version: "{build}"
 skip_tags: true
 clone_folder: C:\CI\bolt
 
-platform:
-  - x86
+# platform:
+#  - x86
 #  - x64
 
-configuration:
+# configuration:
 #  - Debug
-  - Release
+#  - Release
 #  - Release+Debug
 
 environment:
+  EXCHANGE_TEST_PASSWORD: password_in_yml_file
   matrix:
   - NODE_VERSION: 4.2.4
 
 install:
+  - echo EXCHANGE_TEST_PASSWORD: %EXCHANGE_TEST_PASSWORD%
   - SET PATH=C:\Program Files\Atom\resources\cli;%PATH%
   - ps: Install-Product node $env:NODE_VERSION $env:PLATFORM
   - cd /d %APPVEYOR_BUILD_FOLDER%
-  - cmd /c python build\install.py
+  - python build\install.py
 
 build_script:
   - cd /d %APPVEYOR_BUILD_FOLDER%
-  - CI-Build.cmd
+  - mozilla-build\python\python build\build.py "--arch=x86" "--variant=Release" "--target=bolt"
+  - mozilla-build\python\python build\build.py "--arch=x86" "--variant=Release+Debug" "--target=bolt"
+  - mozilla-build\python\python build\build.py "--arch=x64" "--variant=Release" "--target=bolt"
+  - mozilla-build\python\python build\build.py "--arch=x64" "--variant=Release+Debug" "--target=bolt"
+  - mozilla-build\python\python build\build.py "--arch=x86" "--variant=Debug" "--target=bolt"
+  - mozilla-build\python\python build\build.py "--arch=x64" "--variant=Debug" "--target=bolt"
 
 test: off
 deploy: off

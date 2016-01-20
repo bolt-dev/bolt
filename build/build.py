@@ -11,11 +11,25 @@ from BoltUtils import run,setEnv,isWin32
 srcDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(srcDir)
 
+
+parser = argparse.ArgumentParser(description='Building bolt.')
+
+# Other platform have other CPUs
+parser.add_argument('--arch', default='x86', help='The CPU architecture, [x86, x86_64] on Win32')
+if isWin32():
+  parser.add_argument('--variant', default='Release', help='The build variant [Release, Debug, Release+Debug]')
+else:
+  parser.add_argument('--variant', default='release', help='The build variant [release, debug, release+debug]')
+
+parser.add_argument('--target', default='bolt', help='The build target [bolt, xulrunner]')
+
+args = parser.parse_args()
+
+env = os.environ
+
 def buildOnWin32():
   print('Buiding on win32')
-  env = os.environ
-  is64 = 'BUILD_ARCH' in env and env['BUILD_ARCH'] != 'x86'
-
+  is64 = args.arch != 'x86'
   archBits = '64' if is64 else '32'
   setEnv(env, 'MOZ_MSVCBITS', archBits)
   setEnv(env, 'MOZ_MSVCVERSION', '12')
@@ -23,7 +37,6 @@ def buildOnWin32():
   buildArch = 'x86_64' if is64 else 'x86'
   setEnv(env, 'BUILD_ARCH', buildArch)
   setEnv(env, 'BUILD_VENDOR', 'pc-mingw32')
-  setEnv(env, 'BUILD_VARIANT', env['BUILD_VARIANT'].lower())
   homeDir = os.path.join(srcDir, 'build').replace('\\', '/')
   homeDir = homeDir[0].lower() + homeDir[1:]
   setEnv(env, 'HOME', homeDir)
@@ -38,6 +51,9 @@ def buildOnWin32():
 
 def build():
   print('Start build at:' + srcDir)
+  setEnv(env, 'BUILD_VARIANT', args.variant.lower())
+  setEnv(env, 'TARGET_NAME', args.target.lower())
+
   if isWin32():
     buildOnWin32()
 
