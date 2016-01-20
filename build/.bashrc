@@ -10,5 +10,5 @@ echo HOME: ${HOME} BUILD_HOME: ${BUILD_HOME}
 cd ~/../comm/
 echo Start building in $PWD
 
-#./mozilla/mach build
+./mozilla/mach build
 exit
