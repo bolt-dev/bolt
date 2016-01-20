@@ -33,9 +33,10 @@ artifacts:
   - path: atom-build
 
 cache:
-  - mozbuild
-  - mozilla-build
-  - comm
+  - mozbuild\.git
+  - mozilla-build\.git
+  - comm\.git
+  - comm\mozilla\.git
   - node_modules
   - '%USERPROFILE%\.atom\.apm'
   - '%USERPROFILE%\.atom\.node-gyp\.atom'
