@@ -9,15 +9,13 @@ from BoltUtils import run, checkoutGit
 
 srcDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(srcDir)
-isFinish = False
 def checkout(uri, path, branch):
-  global isFinish
-  checkoutGit(uri, os.path.join(srcDir, path), branch, isFinish)
+  checkoutGit(uri, os.path.join(srcDir, path), branch)
 
 def checkoutAll(finished=False):
-  global isFinish
-  isFinish = finished
-  checkout('https://github.com/html-shell/mozbuild', 'mozbuild', None)
+  checkout('https://github.com/bolt-dev/zero', 'zero-test', None)
+  return
+  #checkout('https://github.com/html-shell/mozbuild', 'mozbuild', None)
   checkout('https://github.com/html-shell/mozilla-build', 'mozilla-build', None)
   checkout('https://github.com/bolt-dev/comm', 'comm', None)
   checkout('https://github.com/bolt-dev/gecko-dev', 'comm/mozilla', None)

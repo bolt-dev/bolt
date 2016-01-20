@@ -20,6 +20,7 @@ install:
   - SET PATH=C:\Program Files\Atom\resources\cli;%PATH%
   - ps: Install-Product node $env:NODE_VERSION $env:PLATFORM
   - cd /d %APPVEYOR_BUILD_FOLDER%
+  - npm install github-download
   - python build\install.py
 
 build_script:
@@ -33,9 +34,10 @@ artifacts:
   - path: atom-build
 
 cache:
-  - mozbuild
-  - mozilla-build
-  - comm
+  - mozbuild.zip
+  - mozilla-build.zip
+  - comm.zip
+  - comm.mozilla.zip
   - node_modules
   - '%USERPROFILE%\.atom\.apm'
   - '%USERPROFILE%\.atom\.node-gyp\.atom'

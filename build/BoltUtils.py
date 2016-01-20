@@ -18,7 +18,7 @@ def isWin32():
     return os.name == 'nt'
 
 def isAppveyor():
-    return 'APPVEYOR' in os.environ
+    return 'APPVEYOR' in os.environ or True
 
 def checkoutForce(uri, path, branch):
     delFile(os.path.join(path, '.git', 'index.lock'))
@@ -45,13 +45,19 @@ def checkoutGit(uri, path, branch = None, autoCRLF = False):
     srcGit = os.path.join(path, '.git')
     targetGit = os.path.join(path, 'cache.git')
     if isAppveyor():
-      if os.path.exists(path):
-        print('The folder size for %s is: %d' % (path, getSize(path)))
-        rename(targetGit, srcGit, True)
+        if os.path.exists(path):
+            print('The folder size for %s is: %d' % (path, getSize(path)))
+            rename(targetGit, srcGit, True)
+        else:
+          cmd = 'git clone --bare %s %s' % (uri, os.path.join(path, '.git'))
+          if run(cmd.split(' '), cwd=parentPath).returncode != 0:
+                print('Clone failed!')
+                delDir(path)
+          
     branch = branch or 'master'
-    print('Checkout %s in %s' %(uri, path))
     parentHead = getGitHeadRevision(parentPath)
     currentHead = getGitHeadRevision(path)
+    print('Checkout %s in %s\n ParentHead:%s CurrentHead:%s' %(uri, path, parentHead, currentHead))
     if (parentHead == currentHead or currentHead is None):
         print('Need clone ' + uri)
         delDir(path)
@@ -61,8 +67,10 @@ def checkoutGit(uri, path, branch = None, autoCRLF = False):
             delDir(path)
     cmd = 'git config --local core.autocrlf %s' % (autoCRLF and 'true' or 'false')
     run(cmd.split(' '), cwd=path)
+    run('git config --local core.bare false'.split(' '), cwd=path)
 
     run('git remote set-url origin'.split(' ') + [uri], cwd=path)
+    run('git config --local remote.origin.fetch +refs/heads/*:refs/remotes/origin/*'.split(' '), cwd=path)
     run('git fetch --force --all'.split(' '), cwd=path)
     run('git fetch --force --tags'.split(' '), cwd=path)
     if checkoutForce(uri, path, branch) != 0:

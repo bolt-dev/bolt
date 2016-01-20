@@ -18,7 +18,7 @@ if not defined BUILD_VARIANT (
   set BUILD_VARIANT=Release
 )
 
-goto :build
+::goto :build
 
 if not defined APPVEYOR (
   python build\install.py
@@ -29,7 +29,7 @@ cd /d %~dp0
 set PATH=%CD%\mozilla-build\python;%PATH%
 echo The current python path is:
 where python
-python build\build.py
+::python build\build.py
 
 if not defined APPVEYOR (
   python build\finish.py
