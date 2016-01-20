@@ -5,12 +5,12 @@ clone_folder: C:\CI\bolt
 
 platform:
   - x86
-  - x64
+#  - x64
 
 configuration:
-  - Debug
+#  - Debug
   - Release
-  - Release+Debug
+#  - Release+Debug
 
 environment:
   matrix:
@@ -41,6 +41,8 @@ on_failure:
 
 cache:
   - mozbuild
+  - mozilla-build
+  - comm
   - node_modules
   - '%USERPROFILE%\.atom\.apm'
   - '%USERPROFILE%\.atom\.node-gyp\.atom'
