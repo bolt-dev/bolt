@@ -13,9 +13,9 @@ def checkout(uri, path, branch):
   checkoutGit(uri, os.path.join(srcDir, path), branch)
 
 def checkoutAll(finished=False):
-  checkout('https://github.com/bolt-dev/zero', 'mozbuild', None)
+  #checkout('https://github.com/bolt-dev/zero', 'mozbuild', None)
+  checkout('https://github.com/html-shell/mozbuild', 'mozbuild', None)
   return
-  #checkout('https://github.com/html-shell/mozbuild', 'mozbuild', None)
   checkout('https://github.com/html-shell/mozilla-build', 'mozilla-build', None)
   checkout('https://github.com/bolt-dev/comm', 'comm', None)
   checkout('https://github.com/bolt-dev/gecko-dev', 'comm/mozilla', None)
