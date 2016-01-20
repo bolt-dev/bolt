@@ -11,14 +11,14 @@ if not defined TARGET_NAME (
 )
 
 if not defined BUILD_ARCH (
-  set BUILD_ARCH=x86
+  set BUILD_ARCH=x64
 )
 
 if not defined BUILD_VARIANT (
   set BUILD_VARIANT=Release
 )
 
-::goto :build
+goto :build
 
 if not defined APPVEYOR (
   python build\install.py

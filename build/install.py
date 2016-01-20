@@ -26,7 +26,8 @@ def checkoutAll(finished=False):
   checkout('https://github.com/bolt-dev/gecko-dev', 'comm/mozilla', None)
 
 def install():
-  checkoutAll()
+  # checkoutAll()
+  print("Disable checkout all first")
 
 if __name__ == '__main__':
   run(['git', '--version'])
