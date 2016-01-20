@@ -20,7 +20,7 @@ install:
   - SET PATH=C:\Program Files\Atom\resources\cli;%PATH%
   - ps: Install-Product node $env:NODE_VERSION $env:PLATFORM
   - cd /d %APPVEYOR_BUILD_FOLDER%
-  - python build\install.py
+  - ps: python build\install.py
 
 build_script:
   - cd /d %APPVEYOR_BUILD_FOLDER%
