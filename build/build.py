@@ -4,6 +4,7 @@ import sys
 import argparse
 import copy
 import os
+import json
 
 from BoltUtils import run,setEnv,isWin32
 
@@ -20,13 +21,17 @@ def buildOnWin32():
   setEnv(env, 'MOZ_MSVCVERSION', '12')
   setEnv(env, 'MOZ_MSVCYEAR', '2013')
   setEnv(env, 'BUILD_VARIANT', env['BUILD_VARIANT'].lower())
-  setEnv(env, 'HOME', os.path.join(srcDir, 'build'))
-  buildHome = os.path.join(srcDir, 'build').replace('\\', '/')
+  homeDir = os.path.join(srcDir, 'build').replace('\\', '/')
+  homeDir = homeDir[0].lower() + homeDir[1:]
+  setEnv(env, 'HOME', homeDir)
+
+  buildHome = os.path.join(os.path.dirname(srcDir), 'bolt-building').replace('\\', '/')
   buildHome = buildHome[0].lower() + buildHome[1:]
   setEnv(env, 'BUILD_HOME', buildHome)
+  jsonText = json.dumps(env.__dict__, indent=2)
+  print('The building env info is:' + jsonText)
   scriptPath = os.path.join(srcDir, 'mozilla-build', 'start-shell.bat')
   run([scriptPath] + sys.argv[1:], env=env)
-  pass
 
 def build():
   print('Start build at:' + srcDir)
