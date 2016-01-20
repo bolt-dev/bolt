@@ -1,6 +1,5 @@
 @echo off
-echo Hello, the world!
-echo %EXCHANGE_TEST_PASSWORD%
+echo EXCHANGE_TEST_PASSWORD: %EXCHANGE_TEST_PASSWORD%
 
 if defined APPVEYOR (
   set BUILD_ARCH=%PLATFORM%
@@ -19,7 +18,7 @@ if not defined BUILD_VARIANT (
   set BUILD_VARIANT=Release
 )
 
-goto :build
+::goto :build
 
 if not defined APPVEYOR (
   python build\install.py
