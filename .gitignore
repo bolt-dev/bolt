@@ -6,3 +6,4 @@ comm
 build/Obj-*
 *.gz
 npm-debug.log
+*.zip
