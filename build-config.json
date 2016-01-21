@@ -1,0 +1,28 @@
+{
+  "repos": [
+    {
+      "uri": "html-shell/mozbuild",
+      "branch": "master",
+      "revision": "3ef4e34a783e6a2490d56ea9e48f8413077f3079",
+      "dir": "mozbuild"
+    },
+    {
+      "uri": "html-shell/mozilla-build",
+      "branch": "master",
+      "revision": "832d3f05622478ad1fe1edf885f673d42952e269",
+      "dir": "mozilla-build"
+    },
+    {
+      "uri": "bolt-dev/comm",
+      "branch": "master",
+      "revision": "76d0fee5a39cc2bf22c10bd6fcb54e549641e171",
+      "dir": "comm"
+    },
+    {
+      "uri": "bolt-dev/gecko-dev",
+      "branch": "master",
+      "revision": "0c2a880ad0964532ec47c6af19d8ac6ede2c140c",
+      "dir": "comm/mozilla"
+    }
+  ]
+}

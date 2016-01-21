@@ -40,10 +40,10 @@ artifacts:
   - path: atom-build
 
 cache:
-  - mozbuild\.git
-  - mozilla-build\.git
-  - comm\.git
-  - gecko-dev.tar.gz -> build-config.json
+  - mozbuild.zip -> build-config.json
+  - mozilla-build.zip -> build-config.json
+  - comm.zip -> build-config.json
+  - comm-mozilla.zip -> build-config.json
   - node_modules
   - '%USERPROFILE%\.atom\.apm'
   - '%USERPROFILE%\.atom\.node-gyp\.atom'

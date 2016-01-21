@@ -1,3 +1,5 @@
+from __future__ import print_function, unicode_literals
+
 import os
 import pickle
 import re
@@ -40,7 +42,7 @@ def rename(src, target, force=False):
       if not force:
         raise
 
-def checkoutGit(uri, path, branch = None, autoCRLF = False):
+def checkoutGit(uri, path, branch=None, revision=None, autoCRLF=False):
     parentPath = os.path.dirname(path)
     srcGit = os.path.join(path, '.git')
     targetGit = os.path.join(path, 'cache.git')
@@ -69,8 +71,11 @@ def checkoutGit(uri, path, branch = None, autoCRLF = False):
     run('git fetch --force --tags'.split(' '), cwd=path)
     if checkoutForce(uri, path, branch) != 0:
         print('Checkout %s failed' % (uri))
+    elif revision:
+        cmd = 'git reset --hard %s' % (revision)
+        run(cmd.split(' '), cwd=path)
 
-def run(args = [], stdout = sys.stdout, stderr=sys.stderr, shell = False, cwd=None, verborse=True, env=None):
+def run(args = [], stdout = sys.stdout, stderr=sys.stderr, shell=False, cwd=None, verborse=True, env=None):
     if (isinstance(args , str)):
       args = [args]
     oldCwd = os.getcwd()
