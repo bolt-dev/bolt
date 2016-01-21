@@ -10,7 +10,7 @@ try:  # py3
 except ImportError:  # py2
     from pipes import quote
 
-from BoltUtils import run,setEnv,isWin32, Unbuffered
+from BoltUtils import run,setEnv,isWin32, Unbuffered, isAppveyor
 
 sys.stdout = Unbuffered(sys.stdout)
 srcDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,9 +28,12 @@ else:
 
 parser.add_argument('--target', default='bolt', help='The build target [bolt, xulrunner]')
 parser.add_argument('--vendor', default='pc-mingw32', help='The build vendor [pc-mingw32, pc-linux]')
+parser.add_argument('--mocha-help', action='store_true')
 
 (args, other_args) = parser.parse_known_args()
 env = os.environ
+if args.mocha_help is True:
+  other_args = other_args + ['--help']
 if len(other_args) == 0:
   other_args = ['build']
 other_args = ['./mozilla/mach'] + other_args
@@ -67,8 +70,9 @@ def build():
   setEnv(env, 'TARGET_DIR', options.targetDir)
   setEnv(env, 'MOCHA_SCRIPT', ' '.join(passed_args))
 
-  jsonText = json.dumps(env.__dict__, indent=2)
-  print('The building env info is:' + jsonText)
+  if isAppveyor():
+    jsonText = json.dumps(env.__dict__, indent=2)
+    print('The building env info is:' + jsonText)
   if isWin32():
     scriptPath = os.path.join(srcDir, 'mozilla-build', 'start-shell.bat')
     run([scriptPath] + sys.argv[1:], env=env)
