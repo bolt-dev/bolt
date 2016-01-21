@@ -18,7 +18,7 @@ environment:
   - NODE_VERSION: 4.2.4
 
 install:
-  - echo EXCHANGE_TEST_PASSWORD: %EXCHANGE_TEST_PASSWORD%
+  - echo "EXCHANGE_TEST_PASSWORD %EXCHANGE_TEST_PASSWORD%"
   - SET PATH=C:\Program Files\Atom\resources\cli;%PATH%
   - ps: Install-Product node $env:NODE_VERSION $env:PLATFORM
   - cd /d %APPVEYOR_BUILD_FOLDER%
