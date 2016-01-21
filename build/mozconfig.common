@@ -1,6 +1,3 @@
-export TARGET_DIR
-export BUILD_TRIPLE
-export BUILD_VENDOR
 mk_add_options MOZ_OBJDIR=$TARGET_DIR
 ac_add_options --target=$BUILD_TRIPLE
 ac_add_options --host=$BUILD_TRIPLE
@@ -13,6 +10,7 @@ ac_add_options --enable-update-packaging
 ac_add_options --enable-jemalloc
 
 #ac_add_options --enable-extensions="irc inspector"
+
 # For NSS symbols
 export MOZ_DEBUG_SYMBOLS=1
 
@@ -24,7 +22,7 @@ export MOZILLA_OFFICIAL=1
 # Package js shell
 export MOZ_PACKAGE_JSSHELL=1
 
-. "$HOME/$BUILD_TRIPLE.mozconfig"
+. "$HOME/arch-vendor/$BUILD_TRIPLE.mozconfig"
 
 . "$HOME/$BUILD_VENDOR/mozconfig.common"
 . "$HOME/$BUILD_VENDOR/mozconfig.$BUILD_VARIANT"

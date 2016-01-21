@@ -1,1 +1,1 @@
-if [ -f ~/.bashrc ]; then . ~/.bashrc; fi
+if [ -f ~/build-adapter.sh ]; then . ~/build-adapter.sh; fi
