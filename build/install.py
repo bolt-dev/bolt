@@ -40,8 +40,8 @@ def checkoutAll(finished=False):
       if run(cmd.split(' '), cwd=srcDir, stdout=subprocess.PIPE).returncode != 0:
         delFile(archivePath)
         return
-      rename(extracDir, targetDir)
-      print('Rename %s to %s finished' % (extracDir, targetDir))
+      print('Rename %s to %s' % (extracDir, targetDir))
+      rename(extracDir, targetDir, True)
     else:
       checkoutGit('https://github.com/%s' % (uri), targetDir, branch, revision=revision)
   return
