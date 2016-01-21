@@ -4,6 +4,7 @@ import argparse
 import copy
 import os
 import json
+import subprocess
 
 from BoltUtils import run, checkoutGit, isAppveyor, delDir, delFile, rename
 
@@ -36,7 +37,7 @@ def checkoutAll(finished=False):
       extracDir = os.path.join(srcDir, repoDir.split('/')[-1] + '-' + revision)
       delDir(extracDir)
       cmd = '7z x %s' % (archivePath)
-      if run(cmd.split(' '), cwd=srcDir).returncode != 0:
+      if run(cmd.split(' '), cwd=srcDir, stdout=subprocess.PIPE).returncode != 0:
         delFile(archivePath)
         return
       rename(extracDir, targetDir)
