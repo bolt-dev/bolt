@@ -21,8 +21,11 @@ def checkoutAll(finished=False):
   if isAppveyor():
     uri = 'https://codeload.github.com/bolt-dev/gecko-dev/tar.gz'
     revision = '0c2a880ad0964532ec47c6af19d8ac6ede2c140c'
-    cmd = 'curl -o gecko-dev.tar.gz %s/%s' % (uri, revision)
-    run(cmd.split(' '))
+    if not os.path.exists('gecko-dev.tar.gz'):
+      cmd = 'curl -o gecko-dev.tar.gz %s/%s' % (uri, revision)
+      run(cmd.split(' '))
+    else:
+      print('Use the cached gecko-dev.tar.gz')
   else:
     checkout('https://github.com/bolt-dev/gecko-dev', 'comm/mozilla', None)
 
