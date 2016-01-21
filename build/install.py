@@ -41,6 +41,7 @@ def checkoutAll(finished=False):
         delFile(archivePath)
         return
       rename(extracDir, targetDir)
+      print('Rename %s to %s finished' % (extracDir, targetDir))
     else:
       checkoutGit('https://github.com/%s' % (uri), targetDir, branch, revision=revision)
   return
