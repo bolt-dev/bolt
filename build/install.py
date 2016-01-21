@@ -8,8 +8,9 @@ import subprocess
 import sys
 
 
-from BoltUtils import run, checkoutGit, isAppveyor, delDir, delFile, rename, Unbuffered
+from BoltUtils import run, checkoutGit, isAppveyor, delDir, delFile, rename, Unbuffered, DropBuffer
 
+dropBuffer = DropBuffer(sys.stdout)
 sys.stdout = Unbuffered(sys.stdout)
 srcDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(srcDir)
@@ -32,7 +33,7 @@ def checkoutAll(finished=False):
       if not os.path.exists(archivePath):
         fullURI = 'https://codeload.github.com/%s/zip' % (uri)
         cmd = 'curl -o %s %s/%s' % (archivePath, fullURI, revision)
-        if run(cmd.split(' '), cwd=srcDir, stdout=subprocess.PIPE).returncode != 0:
+        if run(cmd.split(' '), cwd=srcDir, stdout=subprocess.PIPE, stderr=subprocess.PIPE).returncode != 0:
           delFile(archivePath)
           return
         # Extract the downloaded file

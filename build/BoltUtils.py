@@ -16,6 +16,14 @@ class Unbuffered(object):
     def __getattr__(self, attr):
         return getattr(self.stream, attr)
 
+class DropBuffer(object):
+    def __init__(self, stream):
+        self.stream = stream
+    def write(self, data):
+        pass
+    def __getattr__(self, attr):
+        return getattr(self.stream, attr)
+
 def getGitHeadRevision(path):
     cmd = 'git rev-parse HEAD'
     if not os.path.exists(path):
@@ -23,7 +31,7 @@ def getGitHeadRevision(path):
     p = run(cmd.split(' '), cwd=path, stdout=subprocess.PIPE)
     if (p.returncode != 0):
         return None
-    return p.stdout.read()
+    return p.stdout
 
 def isWin32():
     return os.name == 'nt'
@@ -93,8 +101,13 @@ def run(args = [], stdout = sys.stdout, stderr=sys.stderr, shell=False, cwd=None
     if verborse:
       print("Running " + ' '.join(args) + ' in ' + os.getcwd() + ' with ' + str(cwd))
     ret = None
-    p = subprocess.Popen(args, shell = shell, stdout=stdout, stderr=stderr, cwd=cwd, env=env)
-    p.wait()
+    p = subprocess.Popen(args, shell=shell, stdout=stdout, cwd=cwd, env=env)
+    if (stdout == subprocess.PIPE or stderr == subprocess.PIPE):
+      [out,err] = p.communicate()
+      p.stdout = out
+      p.stderr = err
+    else:
+      p.wait()
     if cwd:
       os.chdir(oldCwd)
     return p
