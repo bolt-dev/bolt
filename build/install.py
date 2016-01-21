@@ -5,7 +5,7 @@ import copy
 import os
 import json
 
-from BoltUtils import run, checkoutGit, isAppveyor, delDir, delFile
+from BoltUtils import run, checkoutGit, isAppveyor, delDir, delFile, rename
 
 srcDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(srcDir)
@@ -23,21 +23,23 @@ def checkoutAll(finished=False):
     branch = repo['branch']
     revision = repo['revision']
     targetDir = os.path.join(srcDir, repoDir)
-    if True:
-    #if isAppveyor():
-      fullURI = 'https://codeload.github.com/%s/zip' % (uri)
+    if isAppveyor():
       archivePath = '-'.join(repoDir.split('/')) + '.zip'
       if not os.path.exists(archivePath):
+        fullURI = 'https://codeload.github.com/%s/zip' % (uri)
         cmd = 'curl -o %s %s/%s' % (archivePath, fullURI, revision)
         if run(cmd.split(' '), cwd=srcDir).returncode != 0:
           delFile(archivePath)
           return
         # Extract the downloaded file
       delDir(targetDir)
-      cmd = '7z x -bd -o %s %s' % (repoDir, archivePath)
+      extracDir = os.path.join(srcDir, repoDir.split('/')[-1] + '-' + revision)
+      delDir(extracDir)
+      cmd = '7z x %s' % (archivePath)
       if run(cmd.split(' '), cwd=srcDir).returncode != 0:
-        delDir(targetDir)
+        delFile(archivePath)
         return
+      rename(extracDir, targetDir)
     else:
       checkoutGit('https://github.com/%s' % (uri), targetDir, branch, revision=revision)
   return
