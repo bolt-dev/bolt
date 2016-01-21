@@ -1,5 +1,4 @@
 @echo off
-echo EXCHANGE_TEST_PASSWORD: %EXCHANGE_TEST_PASSWORD%
 
 goto :build
 python build\install.py
