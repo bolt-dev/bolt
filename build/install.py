@@ -5,21 +5,12 @@ import copy
 import os
 import json
 import subprocess
-
-class Unbuffered(object):
-   def __init__(self, stream):
-       self.stream = stream
-   def write(self, data):
-       self.stream.write(data)
-       self.stream.flush()
-   def __getattr__(self, attr):
-       return getattr(self.stream, attr)
-
 import sys
+
+
+from BoltUtils import run, checkoutGit, isAppveyor, delDir, delFile, rename, Unbuffered
+
 sys.stdout = Unbuffered(sys.stdout)
-
-from BoltUtils import run, checkoutGit, isAppveyor, delDir, delFile, rename
-
 srcDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(srcDir)
 

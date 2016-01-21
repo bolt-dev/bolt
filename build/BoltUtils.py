@@ -7,6 +7,15 @@ import shutil
 import sys
 import subprocess
 
+class Unbuffered(object):
+    def __init__(self, stream):
+        self.stream = stream
+    def write(self, data):
+        self.stream.write(data)
+        self.stream.flush()
+    def __getattr__(self, attr):
+        return getattr(self.stream, attr)
+
 def getGitHeadRevision(path):
     cmd = 'git rev-parse HEAD'
     if not os.path.exists(path):
@@ -85,10 +94,7 @@ def run(args = [], stdout = sys.stdout, stderr=sys.stderr, shell=False, cwd=None
       print("Running " + ' '.join(args) + ' in ' + os.getcwd() + ' with ' + str(cwd))
     ret = None
     p = subprocess.Popen(args, shell = shell, stdout=stdout, stderr=stderr, cwd=cwd, env=env)
-    if (stdout == subprocess.PIPE or stderr == subprocess.PIPE):
-      p.communicate()
-    else:
-      p.wait()
+    p.wait()
     if cwd:
       os.chdir(oldCwd)
     return p

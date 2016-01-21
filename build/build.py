@@ -6,8 +6,9 @@ import copy
 import os
 import json
 
-from BoltUtils import run,setEnv,isWin32
+from BoltUtils import run,setEnv,isWin32, Unbuffered
 
+sys.stdout = Unbuffered(sys.stdout)
 srcDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(srcDir)
 
