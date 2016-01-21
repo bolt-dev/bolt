@@ -1,7 +1,7 @@
 @echo off
 echo EXCHANGE_TEST_PASSWORD: %EXCHANGE_TEST_PASSWORD%
 
-goto :build
+:: goto :build
 python build\install.py
 
 :build

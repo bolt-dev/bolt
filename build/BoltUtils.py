@@ -18,7 +18,7 @@ def isWin32():
     return os.name == 'nt'
 
 def isAppveyor():
-    return 'APPVEYOR' in os.environ or True
+    return 'APPVEYOR' in os.environ
 
 def checkoutForce(uri, path, branch):
     delFile(os.path.join(path, '.git', 'index.lock'))
