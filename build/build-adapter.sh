@@ -3,9 +3,9 @@ export MOZBUILD_STATE_PATH=~/
 
 cd ~/../comm/
 
-echo Mach with HOME: ${HOME} PWD:$PWD MOZCONFIG: ${MOZCONFIG}
-echo Building in TARGET_DIR: ${TARGET_DIR} BUILD_TRIPLE:$BUILD_TRIPLE
-export PATH=$PATH:/c/Program\ Files/Git/bin
+echo Mach with HOME: ${HOME} PWD: ${PWD} MOZCONFIG: ${MOZCONFIG}
+echo Building in TARGET_DIR: ${TARGET_DIR} BUILD_TRIPLE: ${BUILD_TRIPLE}
+export PATH=${PATH}:/c/Program\ Files/Git/bin
 echo ${MOCHA_SCRIPT}
 eval ${MOCHA_SCRIPT}
 exit

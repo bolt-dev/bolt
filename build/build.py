@@ -28,7 +28,7 @@ else:
 
 parser.add_argument('--target', default='bolt', help='The build target [bolt, xulrunner]')
 parser.add_argument('--vendor', default='pc-mingw32', help='The build vendor [pc-mingw32, pc-linux]')
-parser.add_argument('--mocha-help', action='store_true')
+parser.add_argument('--mocha-help', action='store_true', help='Print the help information for mocha')
 
 (args, other_args) = parser.parse_known_args()
 env = os.environ
