@@ -8,9 +8,9 @@ platform:
  - x64
 
 configuration:
- - Debug
  - Release
  - Release+Debug
+ - Debug
 
 environment:
   EXCHANGE_TEST_PASSWORD: password_in_yml_file
