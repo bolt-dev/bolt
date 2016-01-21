@@ -26,7 +26,7 @@ install:
 
 build_script:
   - cd /d %APPVEYOR_BUILD_FOLDER%
-  - mozilla-build\python\python build\build.py "--arch=%PLATFORM%" "--variant=%CONFIGURATION%" "--target=bolt"
+  - python build\build.py "--arch=%PLATFORM%" "--variant=%CONFIGURATION%" "--target=bolt"
 
 test: off
 deploy: off

@@ -5,6 +5,10 @@ import argparse
 import copy
 import os
 import json
+try:  # py3
+    from shlex import quote
+except ImportError:  # py2
+    from pipes import quote
 
 from BoltUtils import run,setEnv,isWin32, Unbuffered
 
@@ -25,10 +29,11 @@ else:
 parser.add_argument('--target', default='bolt', help='The build target [bolt, xulrunner]')
 parser.add_argument('--vendor', default='pc-mingw32', help='The build vendor [pc-mingw32, pc-linux]')
 
-args = parser.parse_args()
-
+(args, other_args) = parser.parse_known_args()
 env = os.environ
-
+if len(other_args) == 0:
+  other_args = ['build']
+other_args = ['./mozilla/mach'] + other_args
 def build():
   print('Start build at:' + srcDir)
   options = args
@@ -52,6 +57,7 @@ def build():
   buildHome = buildHome[0].lower() + buildHome[1:]
   buildDirName =  'Obj-%s-%s-%s' % (options.target, options.tripleName, options.variant)
   options.targetDir = os.path.join(buildHome, buildDirName).replace('\\', '/')
+  passed_args = [quote(arg) for arg in other_args]
 
   setEnv(env, 'BUILD_VENDOR', options.vendor)
   setEnv(env, 'BUILD_TRIPLE', options.tripleName)
@@ -59,6 +65,7 @@ def build():
   setEnv(env, 'BUILD_VARIANT', options.variant)
   setEnv(env, 'TARGET_NAME', options.target)
   setEnv(env, 'TARGET_DIR', options.targetDir)
+  setEnv(env, 'MOCHA_SCRIPT', ' '.join(passed_args))
 
   jsonText = json.dumps(env.__dict__, indent=2)
   print('The building env info is:' + jsonText)

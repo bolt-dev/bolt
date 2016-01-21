@@ -424,16 +424,16 @@ locales = [
 # https://hg.mozilla.org/releases/l10n/mozilla-release
 def main(argv):
     RunHg('--version')
+    SyncHgBookmark(CHATZILLA_REPO_LIST, 'chatzilla', 'git@github.com:mail-apps/chatzilla.git')
+    SyncHgBookmark(DOM_INSPECTOR_REPO_LIST, 'dom-inspector', 'git@github.com:mail-apps/inspector.git')
+    SyncHgBookmark(COMM_REPO_LIST, 'comm', 'git@github.com:mail-apps/comm.git')
+    SyncHgBookmark(MOZILLA_REPO_LIST, 'mozilla', 'git@github.com:mail-apps/gecko-dev.git')
     for name in locales:
       l10n = [
         ('https://hg.mozilla.org/l10n-central/' + name, 'default'),
         ('https://hg.mozilla.org/releases/l10n/mozilla-release/' + name, 'release')
       ]
       SyncHgBookmark(l10n, 'l10n/' + name, 'git@github.com:mail-apps-l10n/' + name + '.git')
-    SyncHgBookmark(CHATZILLA_REPO_LIST, 'chatzilla', 'git@github.com:mail-apps/chatzilla.git')
-    SyncHgBookmark(DOM_INSPECTOR_REPO_LIST, 'dom-inspector', 'git@github.com:mail-apps/inspector.git')
-    SyncHgBookmark(COMM_REPO_LIST, 'comm', 'git@github.com:mail-apps/comm.git')
-    SyncHgBookmark(MOZILLA_REPO_LIST, 'mozilla', 'git@github.com:mail-apps/gecko-dev.git')
     return 0
 
 if __name__ == '__main__':
