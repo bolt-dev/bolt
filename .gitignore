@@ -7,3 +7,4 @@ build/Obj-*
 *.gz
 npm-debug.log
 *.zip
+gecko-dev-*

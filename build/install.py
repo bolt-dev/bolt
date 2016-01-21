@@ -6,6 +6,18 @@ import os
 import json
 import subprocess
 
+class Unbuffered(object):
+   def __init__(self, stream):
+       self.stream = stream
+   def write(self, data):
+       self.stream.write(data)
+       self.stream.flush()
+   def __getattr__(self, attr):
+       return getattr(self.stream, attr)
+
+import sys
+sys.stdout = Unbuffered(sys.stdout)
+
 from BoltUtils import run, checkoutGit, isAppveyor, delDir, delFile, rename
 
 srcDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,7 +41,7 @@ def checkoutAll(finished=False):
       if not os.path.exists(archivePath):
         fullURI = 'https://codeload.github.com/%s/zip' % (uri)
         cmd = 'curl -o %s %s/%s' % (archivePath, fullURI, revision)
-        if run(cmd.split(' '), cwd=srcDir).returncode != 0:
+        if run(cmd.split(' '), cwd=srcDir, stdout=subprocess.PIPE).returncode != 0:
           delFile(archivePath)
           return
         # Extract the downloaded file
