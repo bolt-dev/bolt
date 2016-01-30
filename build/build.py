@@ -30,19 +30,25 @@ parser.add_argument('--target', default='bolt', help='The build target [bolt, xu
 parser.add_argument('--vendor', default='pc-mingw32', help='The build vendor [pc-mingw32, pc-linux]')
 parser.add_argument('--mocha-help', action='store_true', help='Print the help information for mocha')
 
-(args, other_args) = parser.parse_known_args()
-env = os.environ
-if args.mocha_help is True:
-  other_args = other_args + ['--help']
-if len(other_args) == 0:
-  other_args = ['build']
-other_args = ['./mozilla/mach'] + other_args
 def build():
+  (args, other_args) = parser.parse_known_args()
+
   print('Start build at:' + srcDir)
   options = args
   options.variant = args.variant.lower()
   options.target = args.target.lower()
   options.arch = args.arch
+  
+  if args.mocha_help is True:
+    other_args = other_args + ['--help']
+  if len(other_args) == 0:
+    other_args = ['build']
+  if (options.target == 'xulrunner'):
+    other_args = ['./mach'] + other_args
+  else:
+    other_args = ['./mozilla/mach'] + other_args
+
+  env = os.environ
   if isWin32():
     print('Buiding on win32')
     is64 = (args.arch != 'x86') and (args.arch != 'i686')

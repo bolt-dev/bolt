@@ -26,7 +26,7 @@ install:
 
 build_script:
   - cd /d %APPVEYOR_BUILD_FOLDER%
-  - python build\build.py "--arch=%PLATFORM%" "--variant=%CONFIGURATION%" "--target=bolt"
+  - python build\build.py "--arch=%PLATFORM%" "--variant=%CONFIGURATION%" "--target=xulrunner"
 
 test: off
 deploy: off
