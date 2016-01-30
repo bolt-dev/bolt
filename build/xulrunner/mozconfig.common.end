@@ -1,1 +1,2 @@
-. "$HOME/../comm/mozilla/xulrunner/config/mozconfigs/common.override"
+. "$topsrcdir/build/mozconfig.common.override"
+# . "$topsrcdir/build/mozconfig.cache"

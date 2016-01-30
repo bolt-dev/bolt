@@ -1,5 +1,6 @@
 @echo off
 
+goto :build
 python build\install.py
 
 :build
